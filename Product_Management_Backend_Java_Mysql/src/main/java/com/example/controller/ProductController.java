@@ -1,0 +1,51 @@
+package com.example.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.Model.Product;
+import com.example.service.ProductService;
+
+@RestController
+@CrossOrigin
+public class ProductController {
+
+	@Autowired
+	private ProductService proService;
+	
+	@PostMapping("/save")
+	public ResponseEntity<?> saveProduct (@RequestBody Product p){
+		return new ResponseEntity<>( proService.saveProduct(p),HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/")
+	public ResponseEntity<?> getAllProduct(){
+		return new ResponseEntity<>(proService.getAllProduct(),HttpStatus.OK);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getProductById(@PathVariable int id){
+		return new ResponseEntity<>(proService.getProductById(id),HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{id}")
+	public void deleteProduct(@PathVariable int id){
+		
+		
+		proService.deleteProduct(id);
+	}
+	
+	@PostMapping("/edit/{id}")
+	public ResponseEntity<?> editProduct(@RequestBody Product p, @PathVariable int id){
+		return new ResponseEntity<>( proService.updateProduct(p, id),HttpStatus.CREATED);
+	}
+	
+}
